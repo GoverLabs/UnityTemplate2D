@@ -82,6 +82,8 @@ public class GameGrid : MonoBehaviour
 			block0.transform.parent = activeCells[2].transform;
 			block0.transform.position = activeCells[2].transform.position;
 						checkShape = true;
+						
+			//CheckShape(new HexCoordinates(x, y));
 		}
 		else
 		{
@@ -143,6 +145,7 @@ public class GameGrid : MonoBehaviour
 	{
 		HashSet<string> blockNames = new HashSet<string>();
 		
+		int checkedCells = 0;
 		foreach (var coordDiff in pattern.diffs)
 		{
 			HexCoordinates newCoord = coord + coordDiff;
@@ -151,14 +154,26 @@ public class GameGrid : MonoBehaviour
 			{
 				string blockName = cell.GetBlockName();
 				blockNames.Add(blockName);
+				//Debug.Log(blockName);
+				checkedCells = checkedCells + 1;
 			}
 		}
 
-		bool patternFound = (blockNames.Count == 1);
+		bool patternFound = (blockNames.Count == 1) && (checkedCells == pattern.diffs.Count);
 		
 		if(patternFound)
 		{
 			Debug.Log("Pattern Found at " + coord);
+			
+		foreach (var coordDiff in pattern.diffs)
+		{
+			HexCoordinates newCoord = coord + coordDiff;
+			GameCell cell = cells.At(newCoord);
+			if(cell)
+			{
+				cell.myIsPatternChecked = true;
+			}
+		}
 		}
 	}
 }

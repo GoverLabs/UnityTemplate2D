@@ -9,6 +9,7 @@ public class GameCell : MonoBehaviour
 	public GameBlockTemplate myBlockTemplate;
 		
 	public bool myIsActive = false;
+	public bool myIsPatternChecked = false;
 	
     // Start is called before the first frame update
     void Start()
@@ -51,13 +52,25 @@ public class GameCell : MonoBehaviour
 	
 	void OnDrawGizmos()
     {
-		if(!myIsActive)
-			return;
+			
+		if(myIsPatternChecked)
+		{
+					        // Draw a yellow sphere at the transform's position
+		Color color = Color.red;
+		color.a = 0.3f;
+        Gizmos.color = color;
+        Gizmos.DrawCube(transform.position /*+ new Vector3(0.5f, 0.5f, 0.5f)*/, new Vector3(1, 1, 1));	
+		}
 		
-        // Draw a yellow sphere at the transform's position
+		if(myIsActive)
+		{
+			        // Draw a yellow sphere at the transform's position
 		Color color = Color.yellow;
 		color.a = 0.3f;
         Gizmos.color = color;
         Gizmos.DrawCube(transform.position /*+ new Vector3(0.5f, 0.5f, 0.5f)*/, new Vector3(1, 1, 1));
+		}
+
+
     }
 }

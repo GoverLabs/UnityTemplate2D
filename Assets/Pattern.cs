@@ -36,7 +36,7 @@ public class Pattern : MonoBehaviour
 			GameCell innerCell = pair.Value;
 			HexCoordinates innerCoord = pair.Key;
 			
-			HexCoordinates diff = pivotCell.Coords - innerCoord;
+			HexCoordinates diff = (pivotCell.Coords - innerCoord) * -1;
 			diffs.Add(diff);
 			Debug.Log(diff);
 		}
