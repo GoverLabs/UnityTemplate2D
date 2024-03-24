@@ -14,6 +14,13 @@ public class GameGrid : MonoBehaviour
 	private GameCell[] activeCells;
 	
 	public Pattern pattern;
+	public Game game;
+	
+	public bool PatternFound
+	{
+		get;
+		private set;
+	}
 	
     // Start is called before the first frame update
     void Start()
@@ -30,10 +37,12 @@ public class GameGrid : MonoBehaviour
 			GameCell innerCell = pair.Value;
 			innerCell.Init(pair.Key);
 		}
-		
+	
+		x = -8;
+		y = 1;
 		// Inited
 		activeCells = new GameCell[3];
-		GetCellsAt(0, 0, activeCells);
+		GetCellsAt(x, y, activeCells);
 		foreach (GameCell element in activeCells)
 		{
 			element.myIsActive = true;
@@ -69,6 +78,8 @@ public class GameGrid : MonoBehaviour
 		
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			Debug.Log("Replace: " + x + " " + y);
+			
 			GameObject block0 = activeCells[0].transform.GetChild(1).gameObject;
 			GameObject block1 = activeCells[1].transform.GetChild(1).gameObject;
 			GameObject block2 = activeCells[2].transform.GetChild(1).gameObject;
@@ -82,19 +93,21 @@ public class GameGrid : MonoBehaviour
 			block0.transform.parent = activeCells[2].transform;
 			block0.transform.position = activeCells[2].transform.position;
 						checkShape = true;
-						
-			//CheckShape(new HexCoordinates(x, y));
 		}
 		else
 		{
 			foreach (GameCell element in activeCells)
 			{
-				element.myIsActive = false;
+				if(element)
+					element.myIsActive = false;
 			}		
 			GetCellsAt(x, y, activeCells);
 			foreach (GameCell element in activeCells)
 			{
-				element.myIsActive = true;
+				if(element)
+				{
+					element.myIsActive = true;
+				}				
 			}			
 		}
 
@@ -106,21 +119,6 @@ public class GameGrid : MonoBehaviour
 				CheckShape(innerCell.Coords);
 			}
 		}
-		
- 		//Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		
-/* 		Vector3 mouseposition = Input.mousePosition;
-		mouseposition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z)) * -1;
-		
-		HexCoordinates mouseCoords = hexCalculator.HexFromPosition(mouseposition);
-
-		if (Input.GetKeyDown(KeyCode.Mouse0) && cells[mouseCoords] != null)
-		{
-			GameCell cell = cells[mouseCoords];
-			cell.myIsActive = !cell.myIsActive;
-			Debug.Log("Coords: " + mouseCoords.ToString());
-			Debug.Log("Mouse: " + mouseposition.ToString());
-		} */
     }
 	
 	GameCell GetFirstCell()
@@ -159,21 +157,24 @@ public class GameGrid : MonoBehaviour
 			}
 		}
 
-		bool patternFound = (blockNames.Count == 1) && (checkedCells == pattern.diffs.Count);
+		PatternFound = (blockNames.Count == 1) && (checkedCells == pattern.diffs.Count);
 		
-		if(patternFound)
+		if(PatternFound)
 		{
 			Debug.Log("Pattern Found at " + coord);
+		
+			game.LevelComplete();
 			
-		foreach (var coordDiff in pattern.diffs)
-		{
-			HexCoordinates newCoord = coord + coordDiff;
-			GameCell cell = cells.At(newCoord);
-			if(cell)
+			foreach (var coordDiff in pattern.diffs)
 			{
-				cell.myIsPatternChecked = true;
+				HexCoordinates newCoord = coord + coordDiff;
+				GameCell cell = cells.At(newCoord);
+				if(cell)
+				{
+					cell.myIsPatternChecked = true;
+					cell.gameObject.SetActive(false);
+				}
 			}
-		}
 		}
 	}
 }

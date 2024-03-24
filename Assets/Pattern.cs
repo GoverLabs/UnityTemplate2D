@@ -38,7 +38,6 @@ public class Pattern : MonoBehaviour
 			
 			HexCoordinates diff = (pivotCell.Coords - innerCoord) * -1;
 			diffs.Add(diff);
-			Debug.Log(diff);
 		}
     }
 
