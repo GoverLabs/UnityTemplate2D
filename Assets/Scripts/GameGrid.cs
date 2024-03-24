@@ -8,6 +8,8 @@ public class GameGrid : MonoBehaviour
 	private HexCalculator hexCalculator;
 	private HexContainer<GameCell> cells;
 	
+	public GameObject selector;
+	
 	private int x = 0;
 	private int y = 0;
 	
@@ -24,7 +26,7 @@ public class GameGrid : MonoBehaviour
 	
     // Start is called before the first frame update
     void Start()
-    {
+    {		
 		HexGrid hexGrid = GetComponent<HexGrid>();
 		hexCalculator = hexGrid.HexCalculator;
 		
@@ -48,6 +50,8 @@ public class GameGrid : MonoBehaviour
 			element.myIsActive = true;
 			Debug.Log(element.GetBlockName());
 		}		
+		
+		MoveSelector();
     }
 
     // Update is called once per frame
@@ -108,7 +112,8 @@ public class GameGrid : MonoBehaviour
 				{
 					element.myIsActive = true;
 				}				
-			}			
+			}
+		MoveSelector();			
 		}
 
 		if(checkShape)
@@ -137,6 +142,16 @@ public class GameGrid : MonoBehaviour
 		
 		coords = new HexCoordinates(x, y + 1);
 		arr[2] = cells.At(coords);
+	}
+	
+	void MoveSelector()
+	{
+			var vec1 = hexCalculator.HexToPosition(activeCells[0].Coords);
+			var vec2 = hexCalculator.HexToPosition(activeCells[1].Coords);
+			var vec3 = hexCalculator.HexToPosition(activeCells[2].Coords);
+			
+			var vec = (vec1 + vec2 + vec3) / 3;
+			selector.transform.position = vec;
 	}
 	
 	void CheckShape(HexCoordinates coord)

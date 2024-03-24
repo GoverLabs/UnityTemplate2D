@@ -157,7 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28afb1b22c833f441af802cc8f0ac1d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selector: {fileID: 8766315592691873078, guid: 5b1ec1afe8bf4d240b7057ca5fb396d9, type: 3}
   pattern: {fileID: -4607225709404587586, guid: 2e6cf4906c9eacf43acb8a80c4ff526c, type: 3}
+  game: {fileID: 0}
 --- !u!1001 &31320569267397484
 PrefabInstance:
   m_ObjectHideFlags: 0

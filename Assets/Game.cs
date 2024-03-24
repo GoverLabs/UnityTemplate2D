@@ -37,6 +37,11 @@ public class Game : MonoBehaviour
 	
         if (Input.GetKeyDown(KeyCode.Space))
 		{
+			if(lvlStart.active)
+			{			
+				GetComponent<Animator>().Play("cow",  -1, 0f);
+			}
+			
 			lvlStart.SetActive(false);
 			lvlComplete.SetActive(false);
 			lvlFailed.SetActive(false);	
@@ -72,5 +77,11 @@ public class Game : MonoBehaviour
 			index=0;
 		
 		StartLevel();
+	}
+	
+	void FailLevel()
+	{
+		lvlFailed.SetActive(true);
+		needSwitch = true;
 	}
 }
